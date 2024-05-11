@@ -3,9 +3,9 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/huoayi/lf_gp_ent/common"
-	"github.com/huoayi/lf_gp_ent/internal/db"
-	"github.com/huoayi/lf_gp_ent/pkg/ent_work/user"
+	"github.com/huoayi/lfgp-ent/common"
+	"github.com/huoayi/lfgp-ent/internal/db"
+	"github.com/huoayi/lfgp-ent/pkg/ent_work/user"
 	"github.com/sirupsen/logrus"
 )
 

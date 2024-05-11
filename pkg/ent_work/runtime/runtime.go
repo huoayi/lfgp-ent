@@ -2,7 +2,7 @@
 
 package runtime
 
-// The schema-stitching logic is generated in github.com/huoayi/lf_gp_ent/pkg/ent_work/runtime.go
+// The schema-stitching logic is generated in github.com/huoayi/lfgp-ent/pkg/ent_work/runtime.go
 
 const (
 	Version = "v0.13.1"                                         // Version of ent codegen.

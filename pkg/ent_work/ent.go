@@ -12,7 +12,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
-	"github.com/huoayi/lf_gp_ent/pkg/ent_work/user"
+	"github.com/huoayi/lfgp-ent/pkg/ent_work/user"
 )
 
 // ent aliases to avoid import conflicts in user's code.

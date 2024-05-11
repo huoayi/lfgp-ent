@@ -5,8 +5,8 @@ package ent_work
 import (
 	"time"
 
-	"github.com/huoayi/lf_gp_ent/pkg/ent_work/schema"
-	"github.com/huoayi/lf_gp_ent/pkg/ent_work/user"
+	"github.com/huoayi/lfgp-ent/pkg/ent_work/schema"
+	"github.com/huoayi/lfgp-ent/pkg/ent_work/user"
 )
 
 // The init function reads all schema descriptors with runtime code

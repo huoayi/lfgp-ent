@@ -6,7 +6,7 @@ import (
 	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/mixin"
-	"github.com/huoayi/lf_gp_ent/common"
+	"github.com/huoayi/lfgp-ent/common"
 	"time"
 )
 

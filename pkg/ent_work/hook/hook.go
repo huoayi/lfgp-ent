@@ -6,7 +6,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/huoayi/lf_gp_ent/pkg/ent_work"
+	"github.com/huoayi/lfgp-ent/pkg/ent_work"
 )
 
 // The UserFunc type is an adapter to allow the use of ordinary

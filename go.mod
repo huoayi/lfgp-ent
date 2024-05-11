@@ -1,4 +1,4 @@
-module github.com/huoayi/lf_gp_ent
+module github.com/huoayi/lfgp-ent
 
 go 1.21
 

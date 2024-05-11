@@ -5,12 +5,12 @@ package enttest
 import (
 	"context"
 
-	"github.com/huoayi/lf_gp_ent/pkg/ent_work"
+	"github.com/huoayi/lfgp-ent/pkg/ent_work"
 	// required by schema hooks.
-	_ "github.com/huoayi/lf_gp_ent/pkg/ent_work/runtime"
+	_ "github.com/huoayi/lfgp-ent/pkg/ent_work/runtime"
 
 	"entgo.io/ent/dialect/sql/schema"
-	"github.com/huoayi/lf_gp_ent/pkg/ent_work/migrate"
+	"github.com/huoayi/lfgp-ent/pkg/ent_work/migrate"
 )
 
 type (

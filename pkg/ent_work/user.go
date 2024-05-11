@@ -9,7 +9,7 @@ import (
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
-	"github.com/huoayi/lf_gp_ent/pkg/ent_work/user"
+	"github.com/huoayi/lfgp-ent/pkg/ent_work/user"
 )
 
 // 用户表
