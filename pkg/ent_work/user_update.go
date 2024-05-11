@@ -11,6 +11,7 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/huoayi/lfgp-ent/pkg/ent_work/creation"
 	"github.com/huoayi/lfgp-ent/pkg/ent_work/predicate"
 	"github.com/huoayi/lfgp-ent/pkg/ent_work/user"
 )
@@ -175,9 +176,45 @@ func (uu *UserUpdate) SetNillableEmail(s *string) *UserUpdate {
 	return uu
 }
 
+// AddCreationIDs adds the "creations" edge to the Creation entity by IDs.
+func (uu *UserUpdate) AddCreationIDs(ids ...int64) *UserUpdate {
+	uu.mutation.AddCreationIDs(ids...)
+	return uu
+}
+
+// AddCreations adds the "creations" edges to the Creation entity.
+func (uu *UserUpdate) AddCreations(c ...*Creation) *UserUpdate {
+	ids := make([]int64, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return uu.AddCreationIDs(ids...)
+}
+
 // Mutation returns the UserMutation object of the builder.
 func (uu *UserUpdate) Mutation() *UserMutation {
 	return uu.mutation
+}
+
+// ClearCreations clears all "creations" edges to the Creation entity.
+func (uu *UserUpdate) ClearCreations() *UserUpdate {
+	uu.mutation.ClearCreations()
+	return uu
+}
+
+// RemoveCreationIDs removes the "creations" edge to Creation entities by IDs.
+func (uu *UserUpdate) RemoveCreationIDs(ids ...int64) *UserUpdate {
+	uu.mutation.RemoveCreationIDs(ids...)
+	return uu
+}
+
+// RemoveCreations removes "creations" edges to Creation entities.
+func (uu *UserUpdate) RemoveCreations(c ...*Creation) *UserUpdate {
+	ids := make([]int64, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return uu.RemoveCreationIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -266,6 +303,51 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := uu.mutation.Email(); ok {
 		_spec.SetField(user.FieldEmail, field.TypeString, value)
+	}
+	if uu.mutation.CreationsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.CreationsTable,
+			Columns: []string{user.CreationsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(creation.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.RemovedCreationsIDs(); len(nodes) > 0 && !uu.mutation.CreationsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.CreationsTable,
+			Columns: []string{user.CreationsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(creation.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uu.mutation.CreationsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.CreationsTable,
+			Columns: []string{user.CreationsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(creation.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_spec.AddModifiers(uu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, uu.driver, _spec); err != nil {
@@ -435,9 +517,45 @@ func (uuo *UserUpdateOne) SetNillableEmail(s *string) *UserUpdateOne {
 	return uuo
 }
 
+// AddCreationIDs adds the "creations" edge to the Creation entity by IDs.
+func (uuo *UserUpdateOne) AddCreationIDs(ids ...int64) *UserUpdateOne {
+	uuo.mutation.AddCreationIDs(ids...)
+	return uuo
+}
+
+// AddCreations adds the "creations" edges to the Creation entity.
+func (uuo *UserUpdateOne) AddCreations(c ...*Creation) *UserUpdateOne {
+	ids := make([]int64, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return uuo.AddCreationIDs(ids...)
+}
+
 // Mutation returns the UserMutation object of the builder.
 func (uuo *UserUpdateOne) Mutation() *UserMutation {
 	return uuo.mutation
+}
+
+// ClearCreations clears all "creations" edges to the Creation entity.
+func (uuo *UserUpdateOne) ClearCreations() *UserUpdateOne {
+	uuo.mutation.ClearCreations()
+	return uuo
+}
+
+// RemoveCreationIDs removes the "creations" edge to Creation entities by IDs.
+func (uuo *UserUpdateOne) RemoveCreationIDs(ids ...int64) *UserUpdateOne {
+	uuo.mutation.RemoveCreationIDs(ids...)
+	return uuo
+}
+
+// RemoveCreations removes "creations" edges to Creation entities.
+func (uuo *UserUpdateOne) RemoveCreations(c ...*Creation) *UserUpdateOne {
+	ids := make([]int64, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return uuo.RemoveCreationIDs(ids...)
 }
 
 // Where appends a list predicates to the UserUpdate builder.
@@ -556,6 +674,51 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	}
 	if value, ok := uuo.mutation.Email(); ok {
 		_spec.SetField(user.FieldEmail, field.TypeString, value)
+	}
+	if uuo.mutation.CreationsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.CreationsTable,
+			Columns: []string{user.CreationsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(creation.FieldID, field.TypeInt64),
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.RemovedCreationsIDs(); len(nodes) > 0 && !uuo.mutation.CreationsCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.CreationsTable,
+			Columns: []string{user.CreationsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(creation.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := uuo.mutation.CreationsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.CreationsTable,
+			Columns: []string{user.CreationsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(creation.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_spec.AddModifiers(uuo.modifiers...)
 	_node = &User{config: uuo.config}

@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"entgo.io/ent/dialect/sql/sqlgraph"
 )
 
 const (
@@ -35,8 +36,17 @@ const (
 	FieldPassword = "password"
 	// FieldEmail holds the string denoting the email field in the database.
 	FieldEmail = "email"
+	// EdgeCreations holds the string denoting the creations edge name in mutations.
+	EdgeCreations = "creations"
 	// Table holds the table name of the user in the database.
 	Table = "users"
+	// CreationsTable is the table that holds the creations relation/edge.
+	CreationsTable = "creations"
+	// CreationsInverseTable is the table name for the Creation entity.
+	// It exists in this package in order to avoid circular dependency with the "creation" package.
+	CreationsInverseTable = "creations"
+	// CreationsColumn is the table column denoting the creations relation/edge.
+	CreationsColumn = "user_id"
 )
 
 // Columns holds all SQL columns for user fields.
@@ -155,4 +165,25 @@ func ByPassword(opts ...sql.OrderTermOption) OrderOption {
 // ByEmail orders the results by the email field.
 func ByEmail(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldEmail, opts...).ToFunc()
+}
+
+// ByCreationsCount orders the results by creations count.
+func ByCreationsCount(opts ...sql.OrderTermOption) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborsCount(s, newCreationsStep(), opts...)
+	}
+}
+
+// ByCreations orders the results by creations terms.
+func ByCreations(term sql.OrderTerm, terms ...sql.OrderTerm) OrderOption {
+	return func(s *sql.Selector) {
+		sqlgraph.OrderByNeighborTerms(s, newCreationsStep(), append([]sql.OrderTerm{term}, terms...)...)
+	}
+}
+func newCreationsStep() *sqlgraph.Step {
+	return sqlgraph.NewStep(
+		sqlgraph.From(Table, FieldID),
+		sqlgraph.To(CreationsInverseTable, FieldID),
+		sqlgraph.Edge(sqlgraph.O2M, false, CreationsTable, CreationsColumn),
+	)
 }

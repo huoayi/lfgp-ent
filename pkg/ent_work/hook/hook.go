@@ -9,6 +9,18 @@ import (
 	"github.com/huoayi/lfgp-ent/pkg/ent_work"
 )
 
+// The CreationFunc type is an adapter to allow the use of ordinary
+// function as Creation mutator.
+type CreationFunc func(context.Context, *ent_work.CreationMutation) (ent_work.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f CreationFunc) Mutate(ctx context.Context, m ent_work.Mutation) (ent_work.Value, error) {
+	if mv, ok := m.(*ent_work.CreationMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent_work.CreationMutation", m)
+}
+
 // The UserFunc type is an adapter to allow the use of ordinary
 // function as User mutator.
 type UserFunc func(context.Context, *ent_work.UserMutation) (ent_work.Value, error)

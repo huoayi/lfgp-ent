@@ -11,6 +11,7 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/huoayi/lfgp-ent/pkg/ent_work/creation"
 	"github.com/huoayi/lfgp-ent/pkg/ent_work/user"
 )
 
@@ -188,6 +189,21 @@ func (uc *UserCreate) SetNillableID(i *int64) *UserCreate {
 		uc.SetID(*i)
 	}
 	return uc
+}
+
+// AddCreationIDs adds the "creations" edge to the Creation entity by IDs.
+func (uc *UserCreate) AddCreationIDs(ids ...int64) *UserCreate {
+	uc.mutation.AddCreationIDs(ids...)
+	return uc
+}
+
+// AddCreations adds the "creations" edges to the Creation entity.
+func (uc *UserCreate) AddCreations(c ...*Creation) *UserCreate {
+	ids := make([]int64, len(c))
+	for i := range c {
+		ids[i] = c[i].ID
+	}
+	return uc.AddCreationIDs(ids...)
 }
 
 // Mutation returns the UserMutation object of the builder.
@@ -386,6 +402,22 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 	if value, ok := uc.mutation.Email(); ok {
 		_spec.SetField(user.FieldEmail, field.TypeString, value)
 		_node.Email = value
+	}
+	if nodes := uc.mutation.CreationsIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   user.CreationsTable,
+			Columns: []string{user.CreationsColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: sqlgraph.NewFieldSpec(creation.FieldID, field.TypeInt64),
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec
 }

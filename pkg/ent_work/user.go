@@ -39,8 +39,29 @@ type User struct {
 	// 密码
 	Password string `json:"-"`
 	// 邮箱
-	Email        string `json:"email"'`
+	Email string `json:"email"'`
+	// Edges holds the relations/edges for other nodes in the graph.
+	// The values are being populated by the UserQuery when eager-loading is set.
+	Edges        UserEdges `json:"edges"`
 	selectValues sql.SelectValues
+}
+
+// UserEdges holds the relations/edges for other nodes in the graph.
+type UserEdges struct {
+	// Creations holds the value of the creations edge.
+	Creations []*Creation `json:"creations,omitempty"`
+	// loadedTypes holds the information for reporting if a
+	// type was loaded (or requested) in eager-loading or not.
+	loadedTypes [1]bool
+}
+
+// CreationsOrErr returns the Creations value or an error if the edge
+// was not loaded in eager-loading.
+func (e UserEdges) CreationsOrErr() ([]*Creation, error) {
+	if e.loadedTypes[0] {
+		return e.Creations, nil
+	}
+	return nil, &NotLoadedError{edge: "creations"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -152,6 +173,11 @@ func (u *User) assignValues(columns []string, values []any) error {
 // This includes values selected through modifiers, order, etc.
 func (u *User) Value(name string) (ent.Value, error) {
 	return u.selectValues.Get(name)
+}
+
+// QueryCreations queries the "creations" edge of the User entity.
+func (u *User) QueryCreations() *CreationQuery {
+	return NewUserClient(u.config).QueryCreations(u)
 }
 
 // Update returns a builder for updating this User.

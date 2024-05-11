@@ -5,6 +5,7 @@ package ent_work
 import (
 	"time"
 
+	"github.com/huoayi/lfgp-ent/pkg/ent_work/creation"
 	"github.com/huoayi/lfgp-ent/pkg/ent_work/schema"
 	"github.com/huoayi/lfgp-ent/pkg/ent_work/user"
 )
@@ -13,6 +14,49 @@ import (
 // (default values, validators, hooks and policies) and stitches it
 // to their package variables.
 func init() {
+	creationMixin := schema.Creation{}.Mixin()
+	creationMixinFields0 := creationMixin[0].Fields()
+	_ = creationMixinFields0
+	creationFields := schema.Creation{}.Fields()
+	_ = creationFields
+	// creationDescCreatedBy is the schema descriptor for created_by field.
+	creationDescCreatedBy := creationMixinFields0[1].Descriptor()
+	// creation.DefaultCreatedBy holds the default value on creation for the created_by field.
+	creation.DefaultCreatedBy = creationDescCreatedBy.Default.(int64)
+	// creationDescUpdatedBy is the schema descriptor for updated_by field.
+	creationDescUpdatedBy := creationMixinFields0[2].Descriptor()
+	// creation.DefaultUpdatedBy holds the default value on creation for the updated_by field.
+	creation.DefaultUpdatedBy = creationDescUpdatedBy.Default.(int64)
+	// creationDescCreatedAt is the schema descriptor for created_at field.
+	creationDescCreatedAt := creationMixinFields0[3].Descriptor()
+	// creation.DefaultCreatedAt holds the default value on creation for the created_at field.
+	creation.DefaultCreatedAt = creationDescCreatedAt.Default.(func() time.Time)
+	// creationDescUpdatedAt is the schema descriptor for updated_at field.
+	creationDescUpdatedAt := creationMixinFields0[4].Descriptor()
+	// creation.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	creation.DefaultUpdatedAt = creationDescUpdatedAt.Default.(func() time.Time)
+	// creation.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	creation.UpdateDefaultUpdatedAt = creationDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// creationDescDeletedAt is the schema descriptor for deleted_at field.
+	creationDescDeletedAt := creationMixinFields0[5].Descriptor()
+	// creation.DefaultDeletedAt holds the default value on creation for the deleted_at field.
+	creation.DefaultDeletedAt = creationDescDeletedAt.Default.(time.Time)
+	// creationDescParameter is the schema descriptor for parameter field.
+	creationDescParameter := creationFields[1].Descriptor()
+	// creation.DefaultParameter holds the default value on creation for the parameter field.
+	creation.DefaultParameter = creationDescParameter.Default.(string)
+	// creationDescURL is the schema descriptor for url field.
+	creationDescURL := creationFields[2].Descriptor()
+	// creation.DefaultURL holds the default value on creation for the url field.
+	creation.DefaultURL = creationDescURL.Default.(string)
+	// creationDescUserID is the schema descriptor for user_id field.
+	creationDescUserID := creationFields[3].Descriptor()
+	// creation.DefaultUserID holds the default value on creation for the user_id field.
+	creation.DefaultUserID = creationDescUserID.Default.(int64)
+	// creationDescID is the schema descriptor for id field.
+	creationDescID := creationMixinFields0[0].Descriptor()
+	// creation.DefaultID holds the default value on creation for the id field.
+	creation.DefaultID = creationDescID.Default.(func() int64)
 	userMixin := schema.User{}.Mixin()
 	userMixinFields0 := userMixin[0].Fields()
 	_ = userMixinFields0

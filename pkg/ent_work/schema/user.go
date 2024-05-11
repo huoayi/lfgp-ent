@@ -3,6 +3,7 @@ package schema
 import (
 	"entgo.io/ent"
 	"entgo.io/ent/schema"
+	"entgo.io/ent/schema/edge"
 	"entgo.io/ent/schema/field"
 )
 
@@ -35,6 +36,12 @@ func (User) Mixin() []ent.Mixin {
 	}
 }
 
+func (User) Edges() []ent.Edge {
+	return []ent.Edge{
+
+		edge.To("creations", Creation.Type),
+	}
+}
 func (User) Annotations() []schema.Annotation {
 	return []schema.Annotation{
 		schema.Comment("用户表"),

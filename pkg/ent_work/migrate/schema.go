@@ -9,6 +9,33 @@ import (
 )
 
 var (
+	// CreationsColumns holds the columns for the "creations" table.
+	CreationsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt64, Comment: "19 位雪花 ID"},
+		{Name: "created_by", Type: field.TypeInt64, Comment: "创建者 ID", Default: 0},
+		{Name: "updated_by", Type: field.TypeInt64, Comment: "更新者 ID", Default: 0},
+		{Name: "created_at", Type: field.TypeTime, Comment: "创建时刻，带时区"},
+		{Name: "updated_at", Type: field.TypeTime, Comment: "更新时刻，带时区"},
+		{Name: "deleted_at", Type: field.TypeTime, Comment: "软删除时刻，带时区"},
+		{Name: "creation_type", Type: field.TypeEnum, Comment: "创作类型", Enums: []string{"txt2voice", "txt2img", "voice2voice"}, Default: "txt2img"},
+		{Name: "parameter", Type: field.TypeString, Comment: "参数", Default: ""},
+		{Name: "url", Type: field.TypeString, Comment: "作品链接", Default: ""},
+		{Name: "user_id", Type: field.TypeInt64, Comment: "用户 id", Default: 0},
+	}
+	// CreationsTable holds the schema information for the "creations" table.
+	CreationsTable = &schema.Table{
+		Name:       "creations",
+		Columns:    CreationsColumns,
+		PrimaryKey: []*schema.Column{CreationsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "creations_users_creations",
+				Columns:    []*schema.Column{CreationsColumns[9]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.NoAction,
+			},
+		},
+	}
 	// UsersColumns holds the columns for the "users" table.
 	UsersColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Comment: "19 位雪花 ID"},
@@ -33,10 +60,13 @@ var (
 	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
+		CreationsTable,
 		UsersTable,
 	}
 )
 
 func init() {
+	CreationsTable.ForeignKeys[0].RefTable = UsersTable
+	CreationsTable.Annotation = &entsql.Annotation{}
 	UsersTable.Annotation = &entsql.Annotation{}
 }
