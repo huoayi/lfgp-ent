@@ -135,6 +135,20 @@ func (cu *CreationUpdate) SetNillableURL(s *string) *CreationUpdate {
 	return cu
 }
 
+// SetStatus sets the "status" field.
+func (cu *CreationUpdate) SetStatus(c creation.Status) *CreationUpdate {
+	cu.mutation.SetStatus(c)
+	return cu
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (cu *CreationUpdate) SetNillableStatus(c *creation.Status) *CreationUpdate {
+	if c != nil {
+		cu.SetStatus(*c)
+	}
+	return cu
+}
+
 // SetUserID sets the "user_id" field.
 func (cu *CreationUpdate) SetUserID(i int64) *CreationUpdate {
 	cu.mutation.SetUserID(i)
@@ -208,6 +222,11 @@ func (cu *CreationUpdate) check() error {
 			return &ValidationError{Name: "creation_type", err: fmt.Errorf(`ent_work: validator failed for field "Creation.creation_type": %w`, err)}
 		}
 	}
+	if v, ok := cu.mutation.Status(); ok {
+		if err := creation.StatusValidator(v); err != nil {
+			return &ValidationError{Name: "status", err: fmt.Errorf(`ent_work: validator failed for field "Creation.status": %w`, err)}
+		}
+	}
 	if _, ok := cu.mutation.UserID(); cu.mutation.UserCleared() && !ok {
 		return errors.New(`ent_work: clearing a required unique edge "Creation.user"`)
 	}
@@ -258,6 +277,9 @@ func (cu *CreationUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := cu.mutation.URL(); ok {
 		_spec.SetField(creation.FieldURL, field.TypeString, value)
+	}
+	if value, ok := cu.mutation.Status(); ok {
+		_spec.SetField(creation.FieldStatus, field.TypeEnum, value)
 	}
 	if cu.mutation.UserCleared() {
 		edge := &sqlgraph.EdgeSpec{
@@ -414,6 +436,20 @@ func (cuo *CreationUpdateOne) SetNillableURL(s *string) *CreationUpdateOne {
 	return cuo
 }
 
+// SetStatus sets the "status" field.
+func (cuo *CreationUpdateOne) SetStatus(c creation.Status) *CreationUpdateOne {
+	cuo.mutation.SetStatus(c)
+	return cuo
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (cuo *CreationUpdateOne) SetNillableStatus(c *creation.Status) *CreationUpdateOne {
+	if c != nil {
+		cuo.SetStatus(*c)
+	}
+	return cuo
+}
+
 // SetUserID sets the "user_id" field.
 func (cuo *CreationUpdateOne) SetUserID(i int64) *CreationUpdateOne {
 	cuo.mutation.SetUserID(i)
@@ -500,6 +536,11 @@ func (cuo *CreationUpdateOne) check() error {
 			return &ValidationError{Name: "creation_type", err: fmt.Errorf(`ent_work: validator failed for field "Creation.creation_type": %w`, err)}
 		}
 	}
+	if v, ok := cuo.mutation.Status(); ok {
+		if err := creation.StatusValidator(v); err != nil {
+			return &ValidationError{Name: "status", err: fmt.Errorf(`ent_work: validator failed for field "Creation.status": %w`, err)}
+		}
+	}
 	if _, ok := cuo.mutation.UserID(); cuo.mutation.UserCleared() && !ok {
 		return errors.New(`ent_work: clearing a required unique edge "Creation.user"`)
 	}
@@ -567,6 +608,9 @@ func (cuo *CreationUpdateOne) sqlSave(ctx context.Context) (_node *Creation, err
 	}
 	if value, ok := cuo.mutation.URL(); ok {
 		_spec.SetField(creation.FieldURL, field.TypeString, value)
+	}
+	if value, ok := cuo.mutation.Status(); ok {
+		_spec.SetField(creation.FieldStatus, field.TypeEnum, value)
 	}
 	if cuo.mutation.UserCleared() {
 		edge := &sqlgraph.EdgeSpec{

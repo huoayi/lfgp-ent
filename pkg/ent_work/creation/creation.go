@@ -32,6 +32,8 @@ const (
 	FieldParameter = "parameter"
 	// FieldURL holds the string denoting the url field in the database.
 	FieldURL = "url"
+	// FieldStatus holds the string denoting the status field in the database.
+	FieldStatus = "status"
 	// FieldUserID holds the string denoting the user_id field in the database.
 	FieldUserID = "user_id"
 	// EdgeUser holds the string denoting the user edge name in mutations.
@@ -58,6 +60,7 @@ var Columns = []string{
 	FieldCreationType,
 	FieldParameter,
 	FieldURL,
+	FieldStatus,
 	FieldUserID,
 }
 
@@ -103,6 +106,33 @@ func CreationTypeValidator(ct enum.CreationType) error {
 		return nil
 	default:
 		return fmt.Errorf("creation: invalid enum value for creation_type field: %q", ct)
+	}
+}
+
+// Status defines the type for the "status" enum field.
+type Status string
+
+// StatusCreated is the default value of the Status enum.
+const DefaultStatus = StatusCreated
+
+// Status values.
+const (
+	StatusCreated Status = "created"
+	StatusSuccess Status = "success"
+	StatusFailed  Status = "failed"
+)
+
+func (s Status) String() string {
+	return string(s)
+}
+
+// StatusValidator is a validator for the "status" field enum values. It is called by the builders before save.
+func StatusValidator(s Status) error {
+	switch s {
+	case StatusCreated, StatusSuccess, StatusFailed:
+		return nil
+	default:
+		return fmt.Errorf("creation: invalid enum value for status field: %q", s)
 	}
 }
 
@@ -152,6 +182,11 @@ func ByParameter(opts ...sql.OrderTermOption) OrderOption {
 // ByURL orders the results by the url field.
 func ByURL(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldURL, opts...).ToFunc()
+}
+
+// ByStatus orders the results by the status field.
+func ByStatus(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldStatus, opts...).ToFunc()
 }
 
 // ByUserID orders the results by the user_id field.

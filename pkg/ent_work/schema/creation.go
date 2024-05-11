@@ -17,6 +17,7 @@ func (Creation) Fields() []ent.Field {
 		field.Enum("creation_type").GoType(enum.Txt2img).StructTag(`json:"creation_type"`).Default(string(enum.Txt2img)).Comment("创作类型"),
 		field.String("parameter").Default("").StructTag(`json:"parameter"`).Comment("参数"),
 		field.String("url").Default("").StructTag(`json:"url"`).Comment("作品链接"),
+		field.Enum("status").Values("created", "success", "failed").Default("created").StructTag(`json:"status"`).Comment("创作状态"),
 		field.Int64("user_id").StructTag(`json:"user_id"`).Default(0).Comment("用户 id"),
 	}
 }

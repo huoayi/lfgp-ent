@@ -36,6 +36,8 @@ type Creation struct {
 	Parameter string `json:"parameter"`
 	// 作品链接
 	URL string `json:"url"`
+	// 创作状态
+	Status creation.Status `json:"status"`
 	// 用户 id
 	UserID int64 `json:"user_id"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -71,7 +73,7 @@ func (*Creation) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case creation.FieldID, creation.FieldCreatedBy, creation.FieldUpdatedBy, creation.FieldUserID:
 			values[i] = new(sql.NullInt64)
-		case creation.FieldCreationType, creation.FieldParameter, creation.FieldURL:
+		case creation.FieldCreationType, creation.FieldParameter, creation.FieldURL, creation.FieldStatus:
 			values[i] = new(sql.NullString)
 		case creation.FieldCreatedAt, creation.FieldUpdatedAt, creation.FieldDeletedAt:
 			values[i] = new(sql.NullTime)
@@ -144,6 +146,12 @@ func (c *Creation) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				c.URL = value.String
 			}
+		case creation.FieldStatus:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field status", values[i])
+			} else if value.Valid {
+				c.Status = creation.Status(value.String)
+			}
 		case creation.FieldUserID:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
 				return fmt.Errorf("unexpected type %T for field user_id", values[i])
@@ -214,6 +222,9 @@ func (c *Creation) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("url=")
 	builder.WriteString(c.URL)
+	builder.WriteString(", ")
+	builder.WriteString("status=")
+	builder.WriteString(fmt.Sprintf("%v", c.Status))
 	builder.WriteString(", ")
 	builder.WriteString("user_id=")
 	builder.WriteString(fmt.Sprintf("%v", c.UserID))

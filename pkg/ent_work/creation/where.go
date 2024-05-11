@@ -456,6 +456,26 @@ func URLContainsFold(v string) predicate.Creation {
 	return predicate.Creation(sql.FieldContainsFold(FieldURL, v))
 }
 
+// StatusEQ applies the EQ predicate on the "status" field.
+func StatusEQ(v Status) predicate.Creation {
+	return predicate.Creation(sql.FieldEQ(FieldStatus, v))
+}
+
+// StatusNEQ applies the NEQ predicate on the "status" field.
+func StatusNEQ(v Status) predicate.Creation {
+	return predicate.Creation(sql.FieldNEQ(FieldStatus, v))
+}
+
+// StatusIn applies the In predicate on the "status" field.
+func StatusIn(vs ...Status) predicate.Creation {
+	return predicate.Creation(sql.FieldIn(FieldStatus, vs...))
+}
+
+// StatusNotIn applies the NotIn predicate on the "status" field.
+func StatusNotIn(vs ...Status) predicate.Creation {
+	return predicate.Creation(sql.FieldNotIn(FieldStatus, vs...))
+}
+
 // UserIDEQ applies the EQ predicate on the "user_id" field.
 func UserIDEQ(v int64) predicate.Creation {
 	return predicate.Creation(sql.FieldEQ(FieldUserID, v))

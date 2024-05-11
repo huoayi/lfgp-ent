@@ -50,7 +50,7 @@ func init() {
 	// creation.DefaultURL holds the default value on creation for the url field.
 	creation.DefaultURL = creationDescURL.Default.(string)
 	// creationDescUserID is the schema descriptor for user_id field.
-	creationDescUserID := creationFields[3].Descriptor()
+	creationDescUserID := creationFields[4].Descriptor()
 	// creation.DefaultUserID holds the default value on creation for the user_id field.
 	creation.DefaultUserID = creationDescUserID.Default.(int64)
 	// creationDescID is the schema descriptor for id field.

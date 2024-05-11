@@ -20,6 +20,7 @@ var (
 		{Name: "creation_type", Type: field.TypeEnum, Comment: "创作类型", Enums: []string{"txt2voice", "txt2img", "voice2voice"}, Default: "txt2img"},
 		{Name: "parameter", Type: field.TypeString, Comment: "参数", Default: ""},
 		{Name: "url", Type: field.TypeString, Comment: "作品链接", Default: ""},
+		{Name: "status", Type: field.TypeEnum, Comment: "创作状态", Enums: []string{"created", "success", "failed"}, Default: "created"},
 		{Name: "user_id", Type: field.TypeInt64, Comment: "用户 id", Default: 0},
 	}
 	// CreationsTable holds the schema information for the "creations" table.
@@ -30,7 +31,7 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "creations_users_creations",
-				Columns:    []*schema.Column{CreationsColumns[9]},
+				Columns:    []*schema.Column{CreationsColumns[10]},
 				RefColumns: []*schema.Column{UsersColumns[0]},
 				OnDelete:   schema.NoAction,
 			},

@@ -136,6 +136,20 @@ func (cc *CreationCreate) SetNillableURL(s *string) *CreationCreate {
 	return cc
 }
 
+// SetStatus sets the "status" field.
+func (cc *CreationCreate) SetStatus(c creation.Status) *CreationCreate {
+	cc.mutation.SetStatus(c)
+	return cc
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (cc *CreationCreate) SetNillableStatus(c *creation.Status) *CreationCreate {
+	if c != nil {
+		cc.SetStatus(*c)
+	}
+	return cc
+}
+
 // SetUserID sets the "user_id" field.
 func (cc *CreationCreate) SetUserID(i int64) *CreationCreate {
 	cc.mutation.SetUserID(i)
@@ -236,6 +250,10 @@ func (cc *CreationCreate) defaults() {
 		v := creation.DefaultURL
 		cc.mutation.SetURL(v)
 	}
+	if _, ok := cc.mutation.Status(); !ok {
+		v := creation.DefaultStatus
+		cc.mutation.SetStatus(v)
+	}
 	if _, ok := cc.mutation.UserID(); !ok {
 		v := creation.DefaultUserID
 		cc.mutation.SetUserID(v)
@@ -276,6 +294,14 @@ func (cc *CreationCreate) check() error {
 	}
 	if _, ok := cc.mutation.URL(); !ok {
 		return &ValidationError{Name: "url", err: errors.New(`ent_work: missing required field "Creation.url"`)}
+	}
+	if _, ok := cc.mutation.Status(); !ok {
+		return &ValidationError{Name: "status", err: errors.New(`ent_work: missing required field "Creation.status"`)}
+	}
+	if v, ok := cc.mutation.Status(); ok {
+		if err := creation.StatusValidator(v); err != nil {
+			return &ValidationError{Name: "status", err: fmt.Errorf(`ent_work: validator failed for field "Creation.status": %w`, err)}
+		}
 	}
 	if _, ok := cc.mutation.UserID(); !ok {
 		return &ValidationError{Name: "user_id", err: errors.New(`ent_work: missing required field "Creation.user_id"`)}
@@ -347,6 +373,10 @@ func (cc *CreationCreate) createSpec() (*Creation, *sqlgraph.CreateSpec) {
 	if value, ok := cc.mutation.URL(); ok {
 		_spec.SetField(creation.FieldURL, field.TypeString, value)
 		_node.URL = value
+	}
+	if value, ok := cc.mutation.Status(); ok {
+		_spec.SetField(creation.FieldStatus, field.TypeEnum, value)
+		_node.Status = value
 	}
 	if nodes := cc.mutation.UserIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
@@ -510,6 +540,18 @@ func (u *CreationUpsert) SetURL(v string) *CreationUpsert {
 // UpdateURL sets the "url" field to the value that was provided on create.
 func (u *CreationUpsert) UpdateURL() *CreationUpsert {
 	u.SetExcluded(creation.FieldURL)
+	return u
+}
+
+// SetStatus sets the "status" field.
+func (u *CreationUpsert) SetStatus(v creation.Status) *CreationUpsert {
+	u.Set(creation.FieldStatus, v)
+	return u
+}
+
+// UpdateStatus sets the "status" field to the value that was provided on create.
+func (u *CreationUpsert) UpdateStatus() *CreationUpsert {
+	u.SetExcluded(creation.FieldStatus)
 	return u
 }
 
@@ -685,6 +727,20 @@ func (u *CreationUpsertOne) SetURL(v string) *CreationUpsertOne {
 func (u *CreationUpsertOne) UpdateURL() *CreationUpsertOne {
 	return u.Update(func(s *CreationUpsert) {
 		s.UpdateURL()
+	})
+}
+
+// SetStatus sets the "status" field.
+func (u *CreationUpsertOne) SetStatus(v creation.Status) *CreationUpsertOne {
+	return u.Update(func(s *CreationUpsert) {
+		s.SetStatus(v)
+	})
+}
+
+// UpdateStatus sets the "status" field to the value that was provided on create.
+func (u *CreationUpsertOne) UpdateStatus() *CreationUpsertOne {
+	return u.Update(func(s *CreationUpsert) {
+		s.UpdateStatus()
 	})
 }
 
@@ -1028,6 +1084,20 @@ func (u *CreationUpsertBulk) SetURL(v string) *CreationUpsertBulk {
 func (u *CreationUpsertBulk) UpdateURL() *CreationUpsertBulk {
 	return u.Update(func(s *CreationUpsert) {
 		s.UpdateURL()
+	})
+}
+
+// SetStatus sets the "status" field.
+func (u *CreationUpsertBulk) SetStatus(v creation.Status) *CreationUpsertBulk {
+	return u.Update(func(s *CreationUpsert) {
+		s.SetStatus(v)
+	})
+}
+
+// UpdateStatus sets the "status" field to the value that was provided on create.
+func (u *CreationUpsertBulk) UpdateStatus() *CreationUpsertBulk {
+	return u.Update(func(s *CreationUpsert) {
+		s.UpdateStatus()
 	})
 }
 

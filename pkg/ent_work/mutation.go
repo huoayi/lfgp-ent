@@ -46,6 +46,7 @@ type CreationMutation struct {
 	creation_type *enum.CreationType
 	parameter     *string
 	url           *string
+	status        *creation.Status
 	clearedFields map[string]struct{}
 	user          *int64
 	cleareduser   bool
@@ -486,6 +487,42 @@ func (m *CreationMutation) ResetURL() {
 	m.url = nil
 }
 
+// SetStatus sets the "status" field.
+func (m *CreationMutation) SetStatus(c creation.Status) {
+	m.status = &c
+}
+
+// Status returns the value of the "status" field in the mutation.
+func (m *CreationMutation) Status() (r creation.Status, exists bool) {
+	v := m.status
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldStatus returns the old "status" field's value of the Creation entity.
+// If the Creation object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *CreationMutation) OldStatus(ctx context.Context) (v creation.Status, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldStatus is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldStatus requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldStatus: %w", err)
+	}
+	return oldValue.Status, nil
+}
+
+// ResetStatus resets all changes to the "status" field.
+func (m *CreationMutation) ResetStatus() {
+	m.status = nil
+}
+
 // SetUserID sets the "user_id" field.
 func (m *CreationMutation) SetUserID(i int64) {
 	m.user = &i
@@ -583,7 +620,7 @@ func (m *CreationMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *CreationMutation) Fields() []string {
-	fields := make([]string, 0, 9)
+	fields := make([]string, 0, 10)
 	if m.created_by != nil {
 		fields = append(fields, creation.FieldCreatedBy)
 	}
@@ -607,6 +644,9 @@ func (m *CreationMutation) Fields() []string {
 	}
 	if m.url != nil {
 		fields = append(fields, creation.FieldURL)
+	}
+	if m.status != nil {
+		fields = append(fields, creation.FieldStatus)
 	}
 	if m.user != nil {
 		fields = append(fields, creation.FieldUserID)
@@ -635,6 +675,8 @@ func (m *CreationMutation) Field(name string) (ent.Value, bool) {
 		return m.Parameter()
 	case creation.FieldURL:
 		return m.URL()
+	case creation.FieldStatus:
+		return m.Status()
 	case creation.FieldUserID:
 		return m.UserID()
 	}
@@ -662,6 +704,8 @@ func (m *CreationMutation) OldField(ctx context.Context, name string) (ent.Value
 		return m.OldParameter(ctx)
 	case creation.FieldURL:
 		return m.OldURL(ctx)
+	case creation.FieldStatus:
+		return m.OldStatus(ctx)
 	case creation.FieldUserID:
 		return m.OldUserID(ctx)
 	}
@@ -728,6 +772,13 @@ func (m *CreationMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetURL(v)
+		return nil
+	case creation.FieldStatus:
+		v, ok := value.(creation.Status)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetStatus(v)
 		return nil
 	case creation.FieldUserID:
 		v, ok := value.(int64)
@@ -835,6 +886,9 @@ func (m *CreationMutation) ResetField(name string) error {
 		return nil
 	case creation.FieldURL:
 		m.ResetURL()
+		return nil
+	case creation.FieldStatus:
+		m.ResetStatus()
 		return nil
 	case creation.FieldUserID:
 		m.ResetUserID()
