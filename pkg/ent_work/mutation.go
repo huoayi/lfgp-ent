@@ -30,35 +30,26 @@ const (
 // UserMutation represents an operation that mutates the User nodes in the graph.
 type UserMutation struct {
 	config
-	op             Op
-	typ            string
-	id             *int64
-	created_by     *int64
-	addcreated_by  *int64
-	updated_by     *int64
-	addupdated_by  *int64
-	created_at     *time.Time
-	updated_at     *time.Time
-	deleted_at     *time.Time
-	name           *string
-	nick_name      *string
-	jpg_url        *string
-	phone          *string
-	password       *string
-	is_frozen      *bool
-	is_recharge    *bool
-	user_type      *user.UserType
-	pop_version    *string
-	area_code      *string
-	email          *string
-	cloud_space    *int64
-	addcloud_space *int64
-	parent_id      *int64
-	addparent_id   *int64
-	clearedFields  map[string]struct{}
-	done           bool
-	oldValue       func(context.Context) (*User, error)
-	predicates     []predicate.User
+	op            Op
+	typ           string
+	id            *int64
+	created_by    *int64
+	addcreated_by *int64
+	updated_by    *int64
+	addupdated_by *int64
+	created_at    *time.Time
+	updated_at    *time.Time
+	deleted_at    *time.Time
+	name          *string
+	nick_name     *string
+	jpg_url       *string
+	phone         *string
+	password      *string
+	email         *string
+	clearedFields map[string]struct{}
+	done          bool
+	oldValue      func(context.Context) (*User, error)
+	predicates    []predicate.User
 }
 
 var _ ent.Mutation = (*UserMutation)(nil)
@@ -565,186 +556,6 @@ func (m *UserMutation) ResetPassword() {
 	m.password = nil
 }
 
-// SetIsFrozen sets the "is_frozen" field.
-func (m *UserMutation) SetIsFrozen(b bool) {
-	m.is_frozen = &b
-}
-
-// IsFrozen returns the value of the "is_frozen" field in the mutation.
-func (m *UserMutation) IsFrozen() (r bool, exists bool) {
-	v := m.is_frozen
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldIsFrozen returns the old "is_frozen" field's value of the User entity.
-// If the User object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserMutation) OldIsFrozen(ctx context.Context) (v bool, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldIsFrozen is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldIsFrozen requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldIsFrozen: %w", err)
-	}
-	return oldValue.IsFrozen, nil
-}
-
-// ResetIsFrozen resets all changes to the "is_frozen" field.
-func (m *UserMutation) ResetIsFrozen() {
-	m.is_frozen = nil
-}
-
-// SetIsRecharge sets the "is_recharge" field.
-func (m *UserMutation) SetIsRecharge(b bool) {
-	m.is_recharge = &b
-}
-
-// IsRecharge returns the value of the "is_recharge" field in the mutation.
-func (m *UserMutation) IsRecharge() (r bool, exists bool) {
-	v := m.is_recharge
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldIsRecharge returns the old "is_recharge" field's value of the User entity.
-// If the User object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserMutation) OldIsRecharge(ctx context.Context) (v bool, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldIsRecharge is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldIsRecharge requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldIsRecharge: %w", err)
-	}
-	return oldValue.IsRecharge, nil
-}
-
-// ResetIsRecharge resets all changes to the "is_recharge" field.
-func (m *UserMutation) ResetIsRecharge() {
-	m.is_recharge = nil
-}
-
-// SetUserType sets the "user_type" field.
-func (m *UserMutation) SetUserType(ut user.UserType) {
-	m.user_type = &ut
-}
-
-// UserType returns the value of the "user_type" field in the mutation.
-func (m *UserMutation) UserType() (r user.UserType, exists bool) {
-	v := m.user_type
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldUserType returns the old "user_type" field's value of the User entity.
-// If the User object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserMutation) OldUserType(ctx context.Context) (v user.UserType, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldUserType is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldUserType requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldUserType: %w", err)
-	}
-	return oldValue.UserType, nil
-}
-
-// ResetUserType resets all changes to the "user_type" field.
-func (m *UserMutation) ResetUserType() {
-	m.user_type = nil
-}
-
-// SetPopVersion sets the "pop_version" field.
-func (m *UserMutation) SetPopVersion(s string) {
-	m.pop_version = &s
-}
-
-// PopVersion returns the value of the "pop_version" field in the mutation.
-func (m *UserMutation) PopVersion() (r string, exists bool) {
-	v := m.pop_version
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldPopVersion returns the old "pop_version" field's value of the User entity.
-// If the User object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserMutation) OldPopVersion(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldPopVersion is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldPopVersion requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldPopVersion: %w", err)
-	}
-	return oldValue.PopVersion, nil
-}
-
-// ResetPopVersion resets all changes to the "pop_version" field.
-func (m *UserMutation) ResetPopVersion() {
-	m.pop_version = nil
-}
-
-// SetAreaCode sets the "area_code" field.
-func (m *UserMutation) SetAreaCode(s string) {
-	m.area_code = &s
-}
-
-// AreaCode returns the value of the "area_code" field in the mutation.
-func (m *UserMutation) AreaCode() (r string, exists bool) {
-	v := m.area_code
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldAreaCode returns the old "area_code" field's value of the User entity.
-// If the User object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserMutation) OldAreaCode(ctx context.Context) (v string, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldAreaCode is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldAreaCode requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldAreaCode: %w", err)
-	}
-	return oldValue.AreaCode, nil
-}
-
-// ResetAreaCode resets all changes to the "area_code" field.
-func (m *UserMutation) ResetAreaCode() {
-	m.area_code = nil
-}
-
 // SetEmail sets the "email" field.
 func (m *UserMutation) SetEmail(s string) {
 	m.email = &s
@@ -781,118 +592,6 @@ func (m *UserMutation) ResetEmail() {
 	m.email = nil
 }
 
-// SetCloudSpace sets the "cloud_space" field.
-func (m *UserMutation) SetCloudSpace(i int64) {
-	m.cloud_space = &i
-	m.addcloud_space = nil
-}
-
-// CloudSpace returns the value of the "cloud_space" field in the mutation.
-func (m *UserMutation) CloudSpace() (r int64, exists bool) {
-	v := m.cloud_space
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldCloudSpace returns the old "cloud_space" field's value of the User entity.
-// If the User object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserMutation) OldCloudSpace(ctx context.Context) (v int64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldCloudSpace is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldCloudSpace requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldCloudSpace: %w", err)
-	}
-	return oldValue.CloudSpace, nil
-}
-
-// AddCloudSpace adds i to the "cloud_space" field.
-func (m *UserMutation) AddCloudSpace(i int64) {
-	if m.addcloud_space != nil {
-		*m.addcloud_space += i
-	} else {
-		m.addcloud_space = &i
-	}
-}
-
-// AddedCloudSpace returns the value that was added to the "cloud_space" field in this mutation.
-func (m *UserMutation) AddedCloudSpace() (r int64, exists bool) {
-	v := m.addcloud_space
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetCloudSpace resets all changes to the "cloud_space" field.
-func (m *UserMutation) ResetCloudSpace() {
-	m.cloud_space = nil
-	m.addcloud_space = nil
-}
-
-// SetParentID sets the "parent_id" field.
-func (m *UserMutation) SetParentID(i int64) {
-	m.parent_id = &i
-	m.addparent_id = nil
-}
-
-// ParentID returns the value of the "parent_id" field in the mutation.
-func (m *UserMutation) ParentID() (r int64, exists bool) {
-	v := m.parent_id
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// OldParentID returns the old "parent_id" field's value of the User entity.
-// If the User object wasn't provided to the builder, the object is fetched from the database.
-// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *UserMutation) OldParentID(ctx context.Context) (v int64, err error) {
-	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldParentID is only allowed on UpdateOne operations")
-	}
-	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldParentID requires an ID field in the mutation")
-	}
-	oldValue, err := m.oldValue(ctx)
-	if err != nil {
-		return v, fmt.Errorf("querying old value for OldParentID: %w", err)
-	}
-	return oldValue.ParentID, nil
-}
-
-// AddParentID adds i to the "parent_id" field.
-func (m *UserMutation) AddParentID(i int64) {
-	if m.addparent_id != nil {
-		*m.addparent_id += i
-	} else {
-		m.addparent_id = &i
-	}
-}
-
-// AddedParentID returns the value that was added to the "parent_id" field in this mutation.
-func (m *UserMutation) AddedParentID() (r int64, exists bool) {
-	v := m.addparent_id
-	if v == nil {
-		return
-	}
-	return *v, true
-}
-
-// ResetParentID resets all changes to the "parent_id" field.
-func (m *UserMutation) ResetParentID() {
-	m.parent_id = nil
-	m.addparent_id = nil
-}
-
 // Where appends a list predicates to the UserMutation builder.
 func (m *UserMutation) Where(ps ...predicate.User) {
 	m.predicates = append(m.predicates, ps...)
@@ -927,7 +626,7 @@ func (m *UserMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *UserMutation) Fields() []string {
-	fields := make([]string, 0, 18)
+	fields := make([]string, 0, 11)
 	if m.created_by != nil {
 		fields = append(fields, user.FieldCreatedBy)
 	}
@@ -958,29 +657,8 @@ func (m *UserMutation) Fields() []string {
 	if m.password != nil {
 		fields = append(fields, user.FieldPassword)
 	}
-	if m.is_frozen != nil {
-		fields = append(fields, user.FieldIsFrozen)
-	}
-	if m.is_recharge != nil {
-		fields = append(fields, user.FieldIsRecharge)
-	}
-	if m.user_type != nil {
-		fields = append(fields, user.FieldUserType)
-	}
-	if m.pop_version != nil {
-		fields = append(fields, user.FieldPopVersion)
-	}
-	if m.area_code != nil {
-		fields = append(fields, user.FieldAreaCode)
-	}
 	if m.email != nil {
 		fields = append(fields, user.FieldEmail)
-	}
-	if m.cloud_space != nil {
-		fields = append(fields, user.FieldCloudSpace)
-	}
-	if m.parent_id != nil {
-		fields = append(fields, user.FieldParentID)
 	}
 	return fields
 }
@@ -1010,22 +688,8 @@ func (m *UserMutation) Field(name string) (ent.Value, bool) {
 		return m.Phone()
 	case user.FieldPassword:
 		return m.Password()
-	case user.FieldIsFrozen:
-		return m.IsFrozen()
-	case user.FieldIsRecharge:
-		return m.IsRecharge()
-	case user.FieldUserType:
-		return m.UserType()
-	case user.FieldPopVersion:
-		return m.PopVersion()
-	case user.FieldAreaCode:
-		return m.AreaCode()
 	case user.FieldEmail:
 		return m.Email()
-	case user.FieldCloudSpace:
-		return m.CloudSpace()
-	case user.FieldParentID:
-		return m.ParentID()
 	}
 	return nil, false
 }
@@ -1055,22 +719,8 @@ func (m *UserMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldPhone(ctx)
 	case user.FieldPassword:
 		return m.OldPassword(ctx)
-	case user.FieldIsFrozen:
-		return m.OldIsFrozen(ctx)
-	case user.FieldIsRecharge:
-		return m.OldIsRecharge(ctx)
-	case user.FieldUserType:
-		return m.OldUserType(ctx)
-	case user.FieldPopVersion:
-		return m.OldPopVersion(ctx)
-	case user.FieldAreaCode:
-		return m.OldAreaCode(ctx)
 	case user.FieldEmail:
 		return m.OldEmail(ctx)
-	case user.FieldCloudSpace:
-		return m.OldCloudSpace(ctx)
-	case user.FieldParentID:
-		return m.OldParentID(ctx)
 	}
 	return nil, fmt.Errorf("unknown User field %s", name)
 }
@@ -1150,61 +800,12 @@ func (m *UserMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetPassword(v)
 		return nil
-	case user.FieldIsFrozen:
-		v, ok := value.(bool)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetIsFrozen(v)
-		return nil
-	case user.FieldIsRecharge:
-		v, ok := value.(bool)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetIsRecharge(v)
-		return nil
-	case user.FieldUserType:
-		v, ok := value.(user.UserType)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetUserType(v)
-		return nil
-	case user.FieldPopVersion:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetPopVersion(v)
-		return nil
-	case user.FieldAreaCode:
-		v, ok := value.(string)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetAreaCode(v)
-		return nil
 	case user.FieldEmail:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetEmail(v)
-		return nil
-	case user.FieldCloudSpace:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetCloudSpace(v)
-		return nil
-	case user.FieldParentID:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.SetParentID(v)
 		return nil
 	}
 	return fmt.Errorf("unknown User field %s", name)
@@ -1220,12 +821,6 @@ func (m *UserMutation) AddedFields() []string {
 	if m.addupdated_by != nil {
 		fields = append(fields, user.FieldUpdatedBy)
 	}
-	if m.addcloud_space != nil {
-		fields = append(fields, user.FieldCloudSpace)
-	}
-	if m.addparent_id != nil {
-		fields = append(fields, user.FieldParentID)
-	}
 	return fields
 }
 
@@ -1238,10 +833,6 @@ func (m *UserMutation) AddedField(name string) (ent.Value, bool) {
 		return m.AddedCreatedBy()
 	case user.FieldUpdatedBy:
 		return m.AddedUpdatedBy()
-	case user.FieldCloudSpace:
-		return m.AddedCloudSpace()
-	case user.FieldParentID:
-		return m.AddedParentID()
 	}
 	return nil, false
 }
@@ -1264,20 +855,6 @@ func (m *UserMutation) AddField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.AddUpdatedBy(v)
-		return nil
-	case user.FieldCloudSpace:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddCloudSpace(v)
-		return nil
-	case user.FieldParentID:
-		v, ok := value.(int64)
-		if !ok {
-			return fmt.Errorf("unexpected type %T for field %s", value, name)
-		}
-		m.AddParentID(v)
 		return nil
 	}
 	return fmt.Errorf("unknown User numeric field %s", name)
@@ -1336,29 +913,8 @@ func (m *UserMutation) ResetField(name string) error {
 	case user.FieldPassword:
 		m.ResetPassword()
 		return nil
-	case user.FieldIsFrozen:
-		m.ResetIsFrozen()
-		return nil
-	case user.FieldIsRecharge:
-		m.ResetIsRecharge()
-		return nil
-	case user.FieldUserType:
-		m.ResetUserType()
-		return nil
-	case user.FieldPopVersion:
-		m.ResetPopVersion()
-		return nil
-	case user.FieldAreaCode:
-		m.ResetAreaCode()
-		return nil
 	case user.FieldEmail:
 		m.ResetEmail()
-		return nil
-	case user.FieldCloudSpace:
-		m.ResetCloudSpace()
-		return nil
-	case user.FieldParentID:
-		m.ResetParentID()
 		return nil
 	}
 	return fmt.Errorf("unknown User field %s", name)

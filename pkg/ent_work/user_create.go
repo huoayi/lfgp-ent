@@ -162,76 +162,6 @@ func (uc *UserCreate) SetNillablePassword(s *string) *UserCreate {
 	return uc
 }
 
-// SetIsFrozen sets the "is_frozen" field.
-func (uc *UserCreate) SetIsFrozen(b bool) *UserCreate {
-	uc.mutation.SetIsFrozen(b)
-	return uc
-}
-
-// SetNillableIsFrozen sets the "is_frozen" field if the given value is not nil.
-func (uc *UserCreate) SetNillableIsFrozen(b *bool) *UserCreate {
-	if b != nil {
-		uc.SetIsFrozen(*b)
-	}
-	return uc
-}
-
-// SetIsRecharge sets the "is_recharge" field.
-func (uc *UserCreate) SetIsRecharge(b bool) *UserCreate {
-	uc.mutation.SetIsRecharge(b)
-	return uc
-}
-
-// SetNillableIsRecharge sets the "is_recharge" field if the given value is not nil.
-func (uc *UserCreate) SetNillableIsRecharge(b *bool) *UserCreate {
-	if b != nil {
-		uc.SetIsRecharge(*b)
-	}
-	return uc
-}
-
-// SetUserType sets the "user_type" field.
-func (uc *UserCreate) SetUserType(ut user.UserType) *UserCreate {
-	uc.mutation.SetUserType(ut)
-	return uc
-}
-
-// SetNillableUserType sets the "user_type" field if the given value is not nil.
-func (uc *UserCreate) SetNillableUserType(ut *user.UserType) *UserCreate {
-	if ut != nil {
-		uc.SetUserType(*ut)
-	}
-	return uc
-}
-
-// SetPopVersion sets the "pop_version" field.
-func (uc *UserCreate) SetPopVersion(s string) *UserCreate {
-	uc.mutation.SetPopVersion(s)
-	return uc
-}
-
-// SetNillablePopVersion sets the "pop_version" field if the given value is not nil.
-func (uc *UserCreate) SetNillablePopVersion(s *string) *UserCreate {
-	if s != nil {
-		uc.SetPopVersion(*s)
-	}
-	return uc
-}
-
-// SetAreaCode sets the "area_code" field.
-func (uc *UserCreate) SetAreaCode(s string) *UserCreate {
-	uc.mutation.SetAreaCode(s)
-	return uc
-}
-
-// SetNillableAreaCode sets the "area_code" field if the given value is not nil.
-func (uc *UserCreate) SetNillableAreaCode(s *string) *UserCreate {
-	if s != nil {
-		uc.SetAreaCode(*s)
-	}
-	return uc
-}
-
 // SetEmail sets the "email" field.
 func (uc *UserCreate) SetEmail(s string) *UserCreate {
 	uc.mutation.SetEmail(s)
@@ -242,34 +172,6 @@ func (uc *UserCreate) SetEmail(s string) *UserCreate {
 func (uc *UserCreate) SetNillableEmail(s *string) *UserCreate {
 	if s != nil {
 		uc.SetEmail(*s)
-	}
-	return uc
-}
-
-// SetCloudSpace sets the "cloud_space" field.
-func (uc *UserCreate) SetCloudSpace(i int64) *UserCreate {
-	uc.mutation.SetCloudSpace(i)
-	return uc
-}
-
-// SetNillableCloudSpace sets the "cloud_space" field if the given value is not nil.
-func (uc *UserCreate) SetNillableCloudSpace(i *int64) *UserCreate {
-	if i != nil {
-		uc.SetCloudSpace(*i)
-	}
-	return uc
-}
-
-// SetParentID sets the "parent_id" field.
-func (uc *UserCreate) SetParentID(i int64) *UserCreate {
-	uc.mutation.SetParentID(i)
-	return uc
-}
-
-// SetNillableParentID sets the "parent_id" field if the given value is not nil.
-func (uc *UserCreate) SetNillableParentID(i *int64) *UserCreate {
-	if i != nil {
-		uc.SetParentID(*i)
 	}
 	return uc
 }
@@ -363,37 +265,9 @@ func (uc *UserCreate) defaults() {
 		v := user.DefaultPassword
 		uc.mutation.SetPassword(v)
 	}
-	if _, ok := uc.mutation.IsFrozen(); !ok {
-		v := user.DefaultIsFrozen
-		uc.mutation.SetIsFrozen(v)
-	}
-	if _, ok := uc.mutation.IsRecharge(); !ok {
-		v := user.DefaultIsRecharge
-		uc.mutation.SetIsRecharge(v)
-	}
-	if _, ok := uc.mutation.UserType(); !ok {
-		v := user.DefaultUserType
-		uc.mutation.SetUserType(v)
-	}
-	if _, ok := uc.mutation.PopVersion(); !ok {
-		v := user.DefaultPopVersion
-		uc.mutation.SetPopVersion(v)
-	}
-	if _, ok := uc.mutation.AreaCode(); !ok {
-		v := user.DefaultAreaCode
-		uc.mutation.SetAreaCode(v)
-	}
 	if _, ok := uc.mutation.Email(); !ok {
 		v := user.DefaultEmail
 		uc.mutation.SetEmail(v)
-	}
-	if _, ok := uc.mutation.CloudSpace(); !ok {
-		v := user.DefaultCloudSpace
-		uc.mutation.SetCloudSpace(v)
-	}
-	if _, ok := uc.mutation.ParentID(); !ok {
-		v := user.DefaultParentID
-		uc.mutation.SetParentID(v)
 	}
 	if _, ok := uc.mutation.ID(); !ok {
 		v := user.DefaultID()
@@ -433,34 +307,8 @@ func (uc *UserCreate) check() error {
 	if _, ok := uc.mutation.Password(); !ok {
 		return &ValidationError{Name: "password", err: errors.New(`ent_work: missing required field "User.password"`)}
 	}
-	if _, ok := uc.mutation.IsFrozen(); !ok {
-		return &ValidationError{Name: "is_frozen", err: errors.New(`ent_work: missing required field "User.is_frozen"`)}
-	}
-	if _, ok := uc.mutation.IsRecharge(); !ok {
-		return &ValidationError{Name: "is_recharge", err: errors.New(`ent_work: missing required field "User.is_recharge"`)}
-	}
-	if _, ok := uc.mutation.UserType(); !ok {
-		return &ValidationError{Name: "user_type", err: errors.New(`ent_work: missing required field "User.user_type"`)}
-	}
-	if v, ok := uc.mutation.UserType(); ok {
-		if err := user.UserTypeValidator(v); err != nil {
-			return &ValidationError{Name: "user_type", err: fmt.Errorf(`ent_work: validator failed for field "User.user_type": %w`, err)}
-		}
-	}
-	if _, ok := uc.mutation.PopVersion(); !ok {
-		return &ValidationError{Name: "pop_version", err: errors.New(`ent_work: missing required field "User.pop_version"`)}
-	}
-	if _, ok := uc.mutation.AreaCode(); !ok {
-		return &ValidationError{Name: "area_code", err: errors.New(`ent_work: missing required field "User.area_code"`)}
-	}
 	if _, ok := uc.mutation.Email(); !ok {
 		return &ValidationError{Name: "email", err: errors.New(`ent_work: missing required field "User.email"`)}
-	}
-	if _, ok := uc.mutation.CloudSpace(); !ok {
-		return &ValidationError{Name: "cloud_space", err: errors.New(`ent_work: missing required field "User.cloud_space"`)}
-	}
-	if _, ok := uc.mutation.ParentID(); !ok {
-		return &ValidationError{Name: "parent_id", err: errors.New(`ent_work: missing required field "User.parent_id"`)}
 	}
 	return nil
 }
@@ -535,37 +383,9 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 		_spec.SetField(user.FieldPassword, field.TypeString, value)
 		_node.Password = value
 	}
-	if value, ok := uc.mutation.IsFrozen(); ok {
-		_spec.SetField(user.FieldIsFrozen, field.TypeBool, value)
-		_node.IsFrozen = value
-	}
-	if value, ok := uc.mutation.IsRecharge(); ok {
-		_spec.SetField(user.FieldIsRecharge, field.TypeBool, value)
-		_node.IsRecharge = value
-	}
-	if value, ok := uc.mutation.UserType(); ok {
-		_spec.SetField(user.FieldUserType, field.TypeEnum, value)
-		_node.UserType = value
-	}
-	if value, ok := uc.mutation.PopVersion(); ok {
-		_spec.SetField(user.FieldPopVersion, field.TypeString, value)
-		_node.PopVersion = value
-	}
-	if value, ok := uc.mutation.AreaCode(); ok {
-		_spec.SetField(user.FieldAreaCode, field.TypeString, value)
-		_node.AreaCode = value
-	}
 	if value, ok := uc.mutation.Email(); ok {
 		_spec.SetField(user.FieldEmail, field.TypeString, value)
 		_node.Email = value
-	}
-	if value, ok := uc.mutation.CloudSpace(); ok {
-		_spec.SetField(user.FieldCloudSpace, field.TypeInt64, value)
-		_node.CloudSpace = value
-	}
-	if value, ok := uc.mutation.ParentID(); ok {
-		_spec.SetField(user.FieldParentID, field.TypeInt64, value)
-		_node.ParentID = value
 	}
 	return _node, _spec
 }
@@ -739,66 +559,6 @@ func (u *UserUpsert) UpdatePassword() *UserUpsert {
 	return u
 }
 
-// SetIsFrozen sets the "is_frozen" field.
-func (u *UserUpsert) SetIsFrozen(v bool) *UserUpsert {
-	u.Set(user.FieldIsFrozen, v)
-	return u
-}
-
-// UpdateIsFrozen sets the "is_frozen" field to the value that was provided on create.
-func (u *UserUpsert) UpdateIsFrozen() *UserUpsert {
-	u.SetExcluded(user.FieldIsFrozen)
-	return u
-}
-
-// SetIsRecharge sets the "is_recharge" field.
-func (u *UserUpsert) SetIsRecharge(v bool) *UserUpsert {
-	u.Set(user.FieldIsRecharge, v)
-	return u
-}
-
-// UpdateIsRecharge sets the "is_recharge" field to the value that was provided on create.
-func (u *UserUpsert) UpdateIsRecharge() *UserUpsert {
-	u.SetExcluded(user.FieldIsRecharge)
-	return u
-}
-
-// SetUserType sets the "user_type" field.
-func (u *UserUpsert) SetUserType(v user.UserType) *UserUpsert {
-	u.Set(user.FieldUserType, v)
-	return u
-}
-
-// UpdateUserType sets the "user_type" field to the value that was provided on create.
-func (u *UserUpsert) UpdateUserType() *UserUpsert {
-	u.SetExcluded(user.FieldUserType)
-	return u
-}
-
-// SetPopVersion sets the "pop_version" field.
-func (u *UserUpsert) SetPopVersion(v string) *UserUpsert {
-	u.Set(user.FieldPopVersion, v)
-	return u
-}
-
-// UpdatePopVersion sets the "pop_version" field to the value that was provided on create.
-func (u *UserUpsert) UpdatePopVersion() *UserUpsert {
-	u.SetExcluded(user.FieldPopVersion)
-	return u
-}
-
-// SetAreaCode sets the "area_code" field.
-func (u *UserUpsert) SetAreaCode(v string) *UserUpsert {
-	u.Set(user.FieldAreaCode, v)
-	return u
-}
-
-// UpdateAreaCode sets the "area_code" field to the value that was provided on create.
-func (u *UserUpsert) UpdateAreaCode() *UserUpsert {
-	u.SetExcluded(user.FieldAreaCode)
-	return u
-}
-
 // SetEmail sets the "email" field.
 func (u *UserUpsert) SetEmail(v string) *UserUpsert {
 	u.Set(user.FieldEmail, v)
@@ -808,42 +568,6 @@ func (u *UserUpsert) SetEmail(v string) *UserUpsert {
 // UpdateEmail sets the "email" field to the value that was provided on create.
 func (u *UserUpsert) UpdateEmail() *UserUpsert {
 	u.SetExcluded(user.FieldEmail)
-	return u
-}
-
-// SetCloudSpace sets the "cloud_space" field.
-func (u *UserUpsert) SetCloudSpace(v int64) *UserUpsert {
-	u.Set(user.FieldCloudSpace, v)
-	return u
-}
-
-// UpdateCloudSpace sets the "cloud_space" field to the value that was provided on create.
-func (u *UserUpsert) UpdateCloudSpace() *UserUpsert {
-	u.SetExcluded(user.FieldCloudSpace)
-	return u
-}
-
-// AddCloudSpace adds v to the "cloud_space" field.
-func (u *UserUpsert) AddCloudSpace(v int64) *UserUpsert {
-	u.Add(user.FieldCloudSpace, v)
-	return u
-}
-
-// SetParentID sets the "parent_id" field.
-func (u *UserUpsert) SetParentID(v int64) *UserUpsert {
-	u.Set(user.FieldParentID, v)
-	return u
-}
-
-// UpdateParentID sets the "parent_id" field to the value that was provided on create.
-func (u *UserUpsert) UpdateParentID() *UserUpsert {
-	u.SetExcluded(user.FieldParentID)
-	return u
-}
-
-// AddParentID adds v to the "parent_id" field.
-func (u *UserUpsert) AddParentID(v int64) *UserUpsert {
-	u.Add(user.FieldParentID, v)
 	return u
 }
 
@@ -1038,76 +762,6 @@ func (u *UserUpsertOne) UpdatePassword() *UserUpsertOne {
 	})
 }
 
-// SetIsFrozen sets the "is_frozen" field.
-func (u *UserUpsertOne) SetIsFrozen(v bool) *UserUpsertOne {
-	return u.Update(func(s *UserUpsert) {
-		s.SetIsFrozen(v)
-	})
-}
-
-// UpdateIsFrozen sets the "is_frozen" field to the value that was provided on create.
-func (u *UserUpsertOne) UpdateIsFrozen() *UserUpsertOne {
-	return u.Update(func(s *UserUpsert) {
-		s.UpdateIsFrozen()
-	})
-}
-
-// SetIsRecharge sets the "is_recharge" field.
-func (u *UserUpsertOne) SetIsRecharge(v bool) *UserUpsertOne {
-	return u.Update(func(s *UserUpsert) {
-		s.SetIsRecharge(v)
-	})
-}
-
-// UpdateIsRecharge sets the "is_recharge" field to the value that was provided on create.
-func (u *UserUpsertOne) UpdateIsRecharge() *UserUpsertOne {
-	return u.Update(func(s *UserUpsert) {
-		s.UpdateIsRecharge()
-	})
-}
-
-// SetUserType sets the "user_type" field.
-func (u *UserUpsertOne) SetUserType(v user.UserType) *UserUpsertOne {
-	return u.Update(func(s *UserUpsert) {
-		s.SetUserType(v)
-	})
-}
-
-// UpdateUserType sets the "user_type" field to the value that was provided on create.
-func (u *UserUpsertOne) UpdateUserType() *UserUpsertOne {
-	return u.Update(func(s *UserUpsert) {
-		s.UpdateUserType()
-	})
-}
-
-// SetPopVersion sets the "pop_version" field.
-func (u *UserUpsertOne) SetPopVersion(v string) *UserUpsertOne {
-	return u.Update(func(s *UserUpsert) {
-		s.SetPopVersion(v)
-	})
-}
-
-// UpdatePopVersion sets the "pop_version" field to the value that was provided on create.
-func (u *UserUpsertOne) UpdatePopVersion() *UserUpsertOne {
-	return u.Update(func(s *UserUpsert) {
-		s.UpdatePopVersion()
-	})
-}
-
-// SetAreaCode sets the "area_code" field.
-func (u *UserUpsertOne) SetAreaCode(v string) *UserUpsertOne {
-	return u.Update(func(s *UserUpsert) {
-		s.SetAreaCode(v)
-	})
-}
-
-// UpdateAreaCode sets the "area_code" field to the value that was provided on create.
-func (u *UserUpsertOne) UpdateAreaCode() *UserUpsertOne {
-	return u.Update(func(s *UserUpsert) {
-		s.UpdateAreaCode()
-	})
-}
-
 // SetEmail sets the "email" field.
 func (u *UserUpsertOne) SetEmail(v string) *UserUpsertOne {
 	return u.Update(func(s *UserUpsert) {
@@ -1119,48 +773,6 @@ func (u *UserUpsertOne) SetEmail(v string) *UserUpsertOne {
 func (u *UserUpsertOne) UpdateEmail() *UserUpsertOne {
 	return u.Update(func(s *UserUpsert) {
 		s.UpdateEmail()
-	})
-}
-
-// SetCloudSpace sets the "cloud_space" field.
-func (u *UserUpsertOne) SetCloudSpace(v int64) *UserUpsertOne {
-	return u.Update(func(s *UserUpsert) {
-		s.SetCloudSpace(v)
-	})
-}
-
-// AddCloudSpace adds v to the "cloud_space" field.
-func (u *UserUpsertOne) AddCloudSpace(v int64) *UserUpsertOne {
-	return u.Update(func(s *UserUpsert) {
-		s.AddCloudSpace(v)
-	})
-}
-
-// UpdateCloudSpace sets the "cloud_space" field to the value that was provided on create.
-func (u *UserUpsertOne) UpdateCloudSpace() *UserUpsertOne {
-	return u.Update(func(s *UserUpsert) {
-		s.UpdateCloudSpace()
-	})
-}
-
-// SetParentID sets the "parent_id" field.
-func (u *UserUpsertOne) SetParentID(v int64) *UserUpsertOne {
-	return u.Update(func(s *UserUpsert) {
-		s.SetParentID(v)
-	})
-}
-
-// AddParentID adds v to the "parent_id" field.
-func (u *UserUpsertOne) AddParentID(v int64) *UserUpsertOne {
-	return u.Update(func(s *UserUpsert) {
-		s.AddParentID(v)
-	})
-}
-
-// UpdateParentID sets the "parent_id" field to the value that was provided on create.
-func (u *UserUpsertOne) UpdateParentID() *UserUpsertOne {
-	return u.Update(func(s *UserUpsert) {
-		s.UpdateParentID()
 	})
 }
 
@@ -1521,76 +1133,6 @@ func (u *UserUpsertBulk) UpdatePassword() *UserUpsertBulk {
 	})
 }
 
-// SetIsFrozen sets the "is_frozen" field.
-func (u *UserUpsertBulk) SetIsFrozen(v bool) *UserUpsertBulk {
-	return u.Update(func(s *UserUpsert) {
-		s.SetIsFrozen(v)
-	})
-}
-
-// UpdateIsFrozen sets the "is_frozen" field to the value that was provided on create.
-func (u *UserUpsertBulk) UpdateIsFrozen() *UserUpsertBulk {
-	return u.Update(func(s *UserUpsert) {
-		s.UpdateIsFrozen()
-	})
-}
-
-// SetIsRecharge sets the "is_recharge" field.
-func (u *UserUpsertBulk) SetIsRecharge(v bool) *UserUpsertBulk {
-	return u.Update(func(s *UserUpsert) {
-		s.SetIsRecharge(v)
-	})
-}
-
-// UpdateIsRecharge sets the "is_recharge" field to the value that was provided on create.
-func (u *UserUpsertBulk) UpdateIsRecharge() *UserUpsertBulk {
-	return u.Update(func(s *UserUpsert) {
-		s.UpdateIsRecharge()
-	})
-}
-
-// SetUserType sets the "user_type" field.
-func (u *UserUpsertBulk) SetUserType(v user.UserType) *UserUpsertBulk {
-	return u.Update(func(s *UserUpsert) {
-		s.SetUserType(v)
-	})
-}
-
-// UpdateUserType sets the "user_type" field to the value that was provided on create.
-func (u *UserUpsertBulk) UpdateUserType() *UserUpsertBulk {
-	return u.Update(func(s *UserUpsert) {
-		s.UpdateUserType()
-	})
-}
-
-// SetPopVersion sets the "pop_version" field.
-func (u *UserUpsertBulk) SetPopVersion(v string) *UserUpsertBulk {
-	return u.Update(func(s *UserUpsert) {
-		s.SetPopVersion(v)
-	})
-}
-
-// UpdatePopVersion sets the "pop_version" field to the value that was provided on create.
-func (u *UserUpsertBulk) UpdatePopVersion() *UserUpsertBulk {
-	return u.Update(func(s *UserUpsert) {
-		s.UpdatePopVersion()
-	})
-}
-
-// SetAreaCode sets the "area_code" field.
-func (u *UserUpsertBulk) SetAreaCode(v string) *UserUpsertBulk {
-	return u.Update(func(s *UserUpsert) {
-		s.SetAreaCode(v)
-	})
-}
-
-// UpdateAreaCode sets the "area_code" field to the value that was provided on create.
-func (u *UserUpsertBulk) UpdateAreaCode() *UserUpsertBulk {
-	return u.Update(func(s *UserUpsert) {
-		s.UpdateAreaCode()
-	})
-}
-
 // SetEmail sets the "email" field.
 func (u *UserUpsertBulk) SetEmail(v string) *UserUpsertBulk {
 	return u.Update(func(s *UserUpsert) {
@@ -1602,48 +1144,6 @@ func (u *UserUpsertBulk) SetEmail(v string) *UserUpsertBulk {
 func (u *UserUpsertBulk) UpdateEmail() *UserUpsertBulk {
 	return u.Update(func(s *UserUpsert) {
 		s.UpdateEmail()
-	})
-}
-
-// SetCloudSpace sets the "cloud_space" field.
-func (u *UserUpsertBulk) SetCloudSpace(v int64) *UserUpsertBulk {
-	return u.Update(func(s *UserUpsert) {
-		s.SetCloudSpace(v)
-	})
-}
-
-// AddCloudSpace adds v to the "cloud_space" field.
-func (u *UserUpsertBulk) AddCloudSpace(v int64) *UserUpsertBulk {
-	return u.Update(func(s *UserUpsert) {
-		s.AddCloudSpace(v)
-	})
-}
-
-// UpdateCloudSpace sets the "cloud_space" field to the value that was provided on create.
-func (u *UserUpsertBulk) UpdateCloudSpace() *UserUpsertBulk {
-	return u.Update(func(s *UserUpsert) {
-		s.UpdateCloudSpace()
-	})
-}
-
-// SetParentID sets the "parent_id" field.
-func (u *UserUpsertBulk) SetParentID(v int64) *UserUpsertBulk {
-	return u.Update(func(s *UserUpsert) {
-		s.SetParentID(v)
-	})
-}
-
-// AddParentID adds v to the "parent_id" field.
-func (u *UserUpsertBulk) AddParentID(v int64) *UserUpsertBulk {
-	return u.Update(func(s *UserUpsert) {
-		s.AddParentID(v)
-	})
-}
-
-// UpdateParentID sets the "parent_id" field to the value that was provided on create.
-func (u *UserUpsertBulk) UpdateParentID() *UserUpsertBulk {
-	return u.Update(func(s *UserUpsert) {
-		s.UpdateParentID()
 	})
 }
 

@@ -60,34 +60,10 @@ func init() {
 	userDescPassword := userFields[4].Descriptor()
 	// user.DefaultPassword holds the default value on creation for the password field.
 	user.DefaultPassword = userDescPassword.Default.(string)
-	// userDescIsFrozen is the schema descriptor for is_frozen field.
-	userDescIsFrozen := userFields[5].Descriptor()
-	// user.DefaultIsFrozen holds the default value on creation for the is_frozen field.
-	user.DefaultIsFrozen = userDescIsFrozen.Default.(bool)
-	// userDescIsRecharge is the schema descriptor for is_recharge field.
-	userDescIsRecharge := userFields[6].Descriptor()
-	// user.DefaultIsRecharge holds the default value on creation for the is_recharge field.
-	user.DefaultIsRecharge = userDescIsRecharge.Default.(bool)
-	// userDescPopVersion is the schema descriptor for pop_version field.
-	userDescPopVersion := userFields[8].Descriptor()
-	// user.DefaultPopVersion holds the default value on creation for the pop_version field.
-	user.DefaultPopVersion = userDescPopVersion.Default.(string)
-	// userDescAreaCode is the schema descriptor for area_code field.
-	userDescAreaCode := userFields[9].Descriptor()
-	// user.DefaultAreaCode holds the default value on creation for the area_code field.
-	user.DefaultAreaCode = userDescAreaCode.Default.(string)
 	// userDescEmail is the schema descriptor for email field.
-	userDescEmail := userFields[10].Descriptor()
+	userDescEmail := userFields[5].Descriptor()
 	// user.DefaultEmail holds the default value on creation for the email field.
 	user.DefaultEmail = userDescEmail.Default.(string)
-	// userDescCloudSpace is the schema descriptor for cloud_space field.
-	userDescCloudSpace := userFields[11].Descriptor()
-	// user.DefaultCloudSpace holds the default value on creation for the cloud_space field.
-	user.DefaultCloudSpace = userDescCloudSpace.Default.(int64)
-	// userDescParentID is the schema descriptor for parent_id field.
-	userDescParentID := userFields[12].Descriptor()
-	// user.DefaultParentID holds the default value on creation for the parent_id field.
-	user.DefaultParentID = userDescParentID.Default.(int64)
 	// userDescID is the schema descriptor for id field.
 	userDescID := userMixinFields0[0].Descriptor()
 	// user.DefaultID holds the default value on creation for the id field.

@@ -22,14 +22,7 @@ var (
 		{Name: "jpg_url", Type: field.TypeString, Comment: "头像", Default: ""},
 		{Name: "phone", Type: field.TypeString, Comment: "用户的手机号", Default: ""},
 		{Name: "password", Type: field.TypeString, Comment: "密码", Default: ""},
-		{Name: "is_frozen", Type: field.TypeBool, Comment: "是否冻结", Default: false},
-		{Name: "is_recharge", Type: field.TypeBool, Comment: "是否充值过", Default: false},
-		{Name: "user_type", Type: field.TypeEnum, Comment: "用户类型", Enums: []string{"personal", "enterprise"}, Default: "personal"},
-		{Name: "pop_version", Type: field.TypeString, Comment: "用户最新弹窗版本", Default: ""},
-		{Name: "area_code", Type: field.TypeString, Comment: "国家区号", Default: "+86"},
 		{Name: "email", Type: field.TypeString, Comment: "邮箱", Default: ""},
-		{Name: "cloud_space", Type: field.TypeInt64, Comment: "云盘空间", Default: 0},
-		{Name: "parent_id", Type: field.TypeInt64, Comment: "邀请人用户 id", Default: 0},
 	}
 	// UsersTable holds the schema information for the "users" table.
 	UsersTable = &schema.Table{

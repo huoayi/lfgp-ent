@@ -38,22 +38,8 @@ type User struct {
 	Phone string `json:"phone"`
 	// 密码
 	Password string `json:"-"`
-	// 是否冻结
-	IsFrozen bool `json:"is_frozen"`
-	// 是否充值过
-	IsRecharge bool `json:"is_recharge"`
-	// 用户类型
-	UserType user.UserType `json:"user_type"`
-	// 用户最新弹窗版本
-	PopVersion string `json:"pop_version"`
-	// 国家区号
-	AreaCode string `json:"area_code"`
 	// 邮箱
-	Email string `json:"email"'`
-	// 云盘空间
-	CloudSpace int64 `json:"cloud_space"`
-	// 邀请人用户 id
-	ParentID     int64 `json:"parent_id,string"`
+	Email        string `json:"email"'`
 	selectValues sql.SelectValues
 }
 
@@ -62,11 +48,9 @@ func (*User) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case user.FieldIsFrozen, user.FieldIsRecharge:
-			values[i] = new(sql.NullBool)
-		case user.FieldID, user.FieldCreatedBy, user.FieldUpdatedBy, user.FieldCloudSpace, user.FieldParentID:
+		case user.FieldID, user.FieldCreatedBy, user.FieldUpdatedBy:
 			values[i] = new(sql.NullInt64)
-		case user.FieldName, user.FieldNickName, user.FieldJpgURL, user.FieldPhone, user.FieldPassword, user.FieldUserType, user.FieldPopVersion, user.FieldAreaCode, user.FieldEmail:
+		case user.FieldName, user.FieldNickName, user.FieldJpgURL, user.FieldPhone, user.FieldPassword, user.FieldEmail:
 			values[i] = new(sql.NullString)
 		case user.FieldCreatedAt, user.FieldUpdatedAt, user.FieldDeletedAt:
 			values[i] = new(sql.NullTime)
@@ -151,53 +135,11 @@ func (u *User) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				u.Password = value.String
 			}
-		case user.FieldIsFrozen:
-			if value, ok := values[i].(*sql.NullBool); !ok {
-				return fmt.Errorf("unexpected type %T for field is_frozen", values[i])
-			} else if value.Valid {
-				u.IsFrozen = value.Bool
-			}
-		case user.FieldIsRecharge:
-			if value, ok := values[i].(*sql.NullBool); !ok {
-				return fmt.Errorf("unexpected type %T for field is_recharge", values[i])
-			} else if value.Valid {
-				u.IsRecharge = value.Bool
-			}
-		case user.FieldUserType:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field user_type", values[i])
-			} else if value.Valid {
-				u.UserType = user.UserType(value.String)
-			}
-		case user.FieldPopVersion:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field pop_version", values[i])
-			} else if value.Valid {
-				u.PopVersion = value.String
-			}
-		case user.FieldAreaCode:
-			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field area_code", values[i])
-			} else if value.Valid {
-				u.AreaCode = value.String
-			}
 		case user.FieldEmail:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field email", values[i])
 			} else if value.Valid {
 				u.Email = value.String
-			}
-		case user.FieldCloudSpace:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field cloud_space", values[i])
-			} else if value.Valid {
-				u.CloudSpace = value.Int64
-			}
-		case user.FieldParentID:
-			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for field parent_id", values[i])
-			} else if value.Valid {
-				u.ParentID = value.Int64
 			}
 		default:
 			u.selectValues.Set(columns[i], values[i])
@@ -264,29 +206,8 @@ func (u *User) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("password=<sensitive>")
 	builder.WriteString(", ")
-	builder.WriteString("is_frozen=")
-	builder.WriteString(fmt.Sprintf("%v", u.IsFrozen))
-	builder.WriteString(", ")
-	builder.WriteString("is_recharge=")
-	builder.WriteString(fmt.Sprintf("%v", u.IsRecharge))
-	builder.WriteString(", ")
-	builder.WriteString("user_type=")
-	builder.WriteString(fmt.Sprintf("%v", u.UserType))
-	builder.WriteString(", ")
-	builder.WriteString("pop_version=")
-	builder.WriteString(u.PopVersion)
-	builder.WriteString(", ")
-	builder.WriteString("area_code=")
-	builder.WriteString(u.AreaCode)
-	builder.WriteString(", ")
 	builder.WriteString("email=")
 	builder.WriteString(u.Email)
-	builder.WriteString(", ")
-	builder.WriteString("cloud_space=")
-	builder.WriteString(fmt.Sprintf("%v", u.CloudSpace))
-	builder.WriteString(", ")
-	builder.WriteString("parent_id=")
-	builder.WriteString(fmt.Sprintf("%v", u.ParentID))
 	builder.WriteByte(')')
 	return builder.String()
 }
